@@ -131,15 +131,15 @@ Los Angeles, CA 90089-2905, USA  % change symbol to "\textcurrency a" if more th
 \end{flushleft}
 % Please keep the abstract below 150 words for NN 
 \section*{Abstract}
-How does the nervous system selects a particular muscle activation pattern from among multiple options?
+How does the nervous system select a particular muscle activation pattern from among multiple options?
 We present a computational and conceptual framework to unify the competing theories of (i) optimization of physiological cost functions, (ii) combination of low-dimensional synergies, and (iii) probabilistic learning of valid activations.
-The neuromechanical definition of a task also defines its feasible activation set (FAS), which is the landscape upon which neuromuscular learning, performance and optimization must occur.
+A motor task defines its feasible activation set (FAS)---the landscape upon which neuromuscular learning, performance and optimization must occur.
 For example, the FAS to produce static force with a finger with seven muscles is a convex polytope embedded in 7-D activation space.
 We demonstrate, for the first time, how sampling such high-dimensional polytopes reveals the structure of the FAS as joint probability distributions, or Bayesian priors.
-This allows us to weigh the pros and cons of optimization approaches and dimensionality reduction techniques.
+This allows us to evaluate how optimization approaches and dimensionality reduction techniques function.
 This provably complete characterization of muscle redundancy---extendable to limbs with many muscles---provides an integrative perspective to motor learning and control.
 
-% Use "Eq" instead of "Equation" for equation citations.
+
 \section*{Introduction}
 How the nervous system selects specific muscle activations for a given motor task is hotly debated. Some suggest the nervous system optimizes physiological cost functions \cite{Chao1978Graphical,Prilutsky2000Muscle,scott2004optimal,todorov2002optimal,crowninshield1981physiologically,higginson2005simulated}, or combines low-dimensional synergies \cite{kutch2012challenges,steele2013number,bizzi2013neural,tresch2009case,dingwell2010walkingvariability,racz2013spatiotemporal,steele2015consequences,alessandro2013musclesynergies}, or learns probabilistic representations of valid muscle activations \cite{kording2004bayesian, Kording2014130, berniker2013examination,sanger2011distributed}.
 At the core of this problem lies the computational challenge of describing and understanding the structure of high-dimensional 'feasible activation sets' (for a review see \cite{valero-cuevas2015fundamentals}). A feasible activation set is the family of valid solutions (i.e.\, muscle activation patterns) available to the nervous system to produce a given motor task.  Figure \ref{fig:overview} describes the neuromechanical interactions that define the feasible activation set for a particular task. The most the nervous system can do is explore and exploit the mechanical wherewithal of the limb to meet the constraints of the task. In fact, it is the structure of the feasible activation set that defines the landscape upon which all neuromuscular learning, optimization and performance must occur. Therefore, research on the nature of muscle coordination must  focus on how nervous system finds, explores, inhabits, and exploits those sets of feasible solutions \cite{kutch2012challenges,steele2013number,bizzi2013neural,tresch2009case,dingwell2010walkingvariability,racz2013spatiotemporal,steele2015consequences}.
@@ -147,20 +147,14 @@ At the core of this problem lies the computational challenge of describing and u
 
 
 But what defines a valid muscle activation pattern? As described in the Methods, a task is defined by its mechanical requirements (i.e., constraints) (Figure \ref{fig:overview}(f)), which must be satisfied by the biomechanical and muscular capabilities of the system (Figure \ref{fig:overview}(e)). Given the presence of muscle redundancy, the neuromechanical constraints for a  particular motor task define the family of valid muscle activation patterns (i.e., the feasible muscle activation set) available to the nervous system to perform the task (Figure \ref{fig:overview}(d)).
-%How the nervous system selects a particular solution from within this infinite set of options is hotly debated. In general, current thinking favors three theories of motor control: that the nervous system combines low-dimensional synergies, learns probabilistic representations of valid muscle activations, or optimizes physiologically-tenable cost functions \cite{valero-cuevas2015fundamentals}(Figure \ref{fig:overview}(g, h, i), respectively).
-%In this work we characterize the set of all feasible muscle activations in their \emph{native high-dimensional space} in sufficient detail to reconcile these three alternative approaches to motor control. 
-%Well-posed underdetermined problems---like muscle redundancy---have well-defined solution spaces embedded in the native high-dimensional space of all variables \cite{Chvatal1983Linear}.
+
 But the `curse of dimensionality' \cite{bellman1957dynamic,bellman2015adaptive,avis1992Pivoting} makes it conceptually and computationally challenging to calculate, describe and understand the nature and structure of those feasible solution sets \cite{valero2009computational,Chao1978Graphical,spoor1983balancing,Kuo1993Human,theodorou2010optimalityEMBC,scholz1999uncontrolled,dingwell2010walkingvariability}; even for time-invariant neuromechanical models of static force production \cite{Valero-Cuevas2015high-dimensional,valero-cuevas2015fundamentals,sohn2013cat_bounding_box}.
+
+To overcome these difficulties, it is commonplace (e.g., \cite{Frontiers2012Modularity,Clewley2008Estimating}) to apply dimensionality reduction techniques to approximate the high-dimensional kinematic or muscle activation spaces \cite{scholz1999uncontrolled, krishnamoorthy2003muscle,santello1998postural} (Figure \ref{fig:overview}(g)).
+This dimensionality reduction approach is now being applied to ever higher-dimensional spaces of neural activity representing the dynamics of  populations of motor neurons (e.g., \cite{churchland2012neural,sadtler2014neural}) (Figure \ref{fig:overview}(a, b)). At heart, however, dimensionality reduction is a means to \emph{approximate} the latent structure of solution sets embedded in high-dimensional spaces \cite{valero-cuevas2015fundamentals}---with its inherent advantages and limitations \cite{Clewley2008Estimating}.
 
 
 We now present a novel approach to describe, in detail, the structure of feasible solution sets embedded in high-dimensional spaces. As an example, we describe the structure of  the feasible activation set for the motor control problem of static fingertip force production \cite{Valero-Cuevas1998Large,kutch2012challenges,Venkadesan2008Neural}. This feasible activation set is a low-dimensional polytope embedded in 7-dimensional muscle activation space. Our approach hinges on the efficient sampling of high-dimensional polytopes to extract joint probability distributions of feasible activations across all muscles. These techniques can be used for larger-dimensional systems having c. 40 muscles. By providing a provably complete characterization of all muscle activation patterns for a given motor task, we are able to compare, contrast and reconcile today's three dominant approaches to motor control.
-
-%This detailed view of how the structure of feasible motor actions affects fitness landscapes of alternative cost functions  suggests that habitual, memory-based Bayesian strategies are the more biologically plausible approach to sensorimotor control. 
-
-%The number of muscles across a limb, $n$, defines an n-dimensional space of feasible activations where each muscle can be activated between 0 and 1. The subset of this n-dimensional positive cube that is able to produce a given sub-maximal static force is called the feasible activation set for the task; if it exists, it is a convex polytope defined by the constraints that arise from the mechanical definition of the task and the properties of the limb. Even for 'simple' models, those with a reasonable number of muscles performing a well constrained task \cite{Valero-Cuevas1998Large,valero-cuevas2015fundamentals,sohn2013cat_bounding_box,Chao1978Graphical,spoor1983balancing}, interpreting the set of feasible activations in high dimensions is difficult. \cite{bellman1957dynamic,bellman2015adaptive}. 
-
-%Consider a one-link limb with 3 muscles producing a static force. In this case a simple example of a feasible activation set would be represented by a plane embedded in the positive 3-dimensional cube, Fig. \ref{fig:hitruncube}. There are an infinite number of solutions to the task (i.e.\, points in the plane)---and any learning, optimization, or performance of the task involves finding, exploring, and exploiting the landscape of that plane. In spite of the model's simplicity, one can already see that describing and understanding the properties of this convex polygon for the purposes of gaining insight into neural control can be challenging. For example, describing the constraint equations or vertices that define its boundaries it do not speak to the many coordination strategies in its interior. Finding its bounding box can overestimate its size (while a bounding box of a line segment has volume, the line has no volume). And principal component analysis of points within the polygon provides a non-unique basis function with information equivalent to that already available from the constraint equations and vertices. Defining the structure of this space may be less useful then sampling it in a way that provides histogram densities of possible muscle activations, and parallel coordinates of cross-muscle relationships.
-
 
 \section*{Materials and Methods}
 
@@ -305,33 +299,8 @@ With the axis limits of each line set between 0 and 1, each point (Fig. \ref{fig
 \subsection*{Neural and metabolic cost functions}
 
 As mentioned in the Introduction, the field of neuromuscular control has a long historical tradition of using optimization to find muscle activation patterns that minimize effort, which requires the (often contentious) definition of cost functions \cite{Prilutsky2000Muscle,crowninshield1981physiologically}. Therefore, we used four representative cost functions to calculate the relative fitness of each of the 10,000 muscle activation points sampled. The cost functions are defined at the level of neural effort ($L_1$, and $L_2$ norms); and at the level of metabolic cost, thought to be approximated by neural drive weighted by the strength of each muscle ($L_1^w$ and $L_2^w$ norms).
-% 
-% \newcommand\uprule{\rule{0mm}{1.9ex}}
-% \begin{table}[h]
-% \centering
-% \begin{tabular}{@{}ll@{}}
-% \toprule
-% \textbf{Abbreviation} & \textbf{Cost function} & \textbf{Name}  \\
-%  \\
-% $L_1$            & $\sum_{i=1}^n a_i$         & Sum of activations                            \\
-%  \\
-% $L_2$            & $\sqrt{\uprule\sum_{i=1}^n a_i^2}$   & Euclidean norm of activations                            \\
-%  \\
-% %$L_3$            & $\sqrt[3]{\uprule\sum_{i=1}^n a_i^3}$                          \\
-%  %\\
-% $L_1^w$            & $\sum_{i=1}^n a_i F_{0i}$     & Sum of strength-weighted activations                          \\
-%  \\
-% $L_2^w$            & $\sqrt{\uprule\sum_{i=1}^n (a_i F_{0i})^2}$  & Euclidean norm of strength-weighted activations                \\
-%  \\
-% %$L_3^w$            & $\sqrt[3]{\uprule\sum_{i=1}^n (a_i F_{0i})^3}$          \\
-% %  \\
-% \end{tabular}
-% \caption{Linear and quadratic cost functions. The variables $a_i$ and $F_{0i}$ represent the activation of the $i^{th}$ muscle in a given muscle activation pattern, and the maximal strength of each muscle \cite{Prilutsky2000Muscle,crowninshield1981physiologically}. Maximal muscle strengths are approximated by the multiplying  each muscle's physiological cross-sectional area, in $cm^2$, by the maximal active muscle stress of mammalian muscle, $35~N/{cm^2}$ \cite{Zajac1993Muscle}
-% .}
-% \label{cost_function_tabls}
-% \end{table}
-% 
-To visualize the cost of each valid muscle coordination pattern, we simply added four vertical lines, one for each cost function (Table \ref{cost_function_tabls}), to the parallel coordinates plot to show the associated costs of each point. Fig. \ref{fig:points_to_parcoords_mapping}c illustrates this mapping.
+
+To visualize the cost of each valid muscle coordination pattern, we simply added four vertical lines, one for each cost function (Table \ref{cost_function_tabls}), to the parallel coordinates plot to show the associated costs of each point. Fig. \ref{fig:points_to_parcoords_mapping}c illustrates this mapping. Linear and quadratic cost functions. The variables $a_i$ and $F_{0i}$ represent the activation of the $i^{th}$ muscle in a given muscle activation pattern, and the maximal strength of each muscle \cite{Prilutsky2000Muscle,crowninshield1981physiologically}. Maximal muscle strengths are approximated by the multiplying  each muscle's physiological cross-sectional area, in $cm^2$, by the maximal active muscle stress of mammalian muscle, $35~N/{cm^2}$ \cite{Zajac1993Muscle}
 
 \subsection*{Dimensionality reduction}
 
@@ -393,10 +362,7 @@ Notably, we observe that a meaningful cross-muscle comparison of point distribut
 We find this holds when comparing inter- and intra-muscle distributions. Consider the significant change in the shape of the distributions across the progression for EDC until the 60\% task; the lower and upper bounds change less than 1\% and 4\%, respectively, while the median shifted by nearly 40\%.
 In the most extreme case, the median activation can be exceptionally narrow, while the bounds are wide. For example, EIP at a 90\% task although its activation is bounded between 0.1 and 0.81. That is, approximately 79\% of the solutions exist with EIP activation between just 0.49 and 0.51.
 
-% [[don't think we need this]]Next, we see that fixing the acivation of a muscle to a single value throughout the entire force progression, DI and PI would fail; their bounding boxes of tasks below $\alpha=0.4$ do not include the unique solution at $\alpha=1.0$.
-
 Importantly, the modes of the distributions do not correspond to the scaled-down value needed for maximal force magnitude.  That is, we  placed a vertical grey line correspondnig to scaled-down value of the unique solution at maximal force, denoted $\textbf{a}^*$. Thus for example, if LUM converges to an activation of 1 for maximal distal force, we put a grey line at 0.8 for a force that is 80\% of maximal, or  $\alpha=0.8$.
-%Since $\alpha \textbf{f}_{\max} = \alpha H \textbf{a}^*$, $\alpha \textbf{a}^*$ is a solution of the feasible activation set at $\alpha$-fraction of the maximal force.
 This allows us to see that, for some muscles like DI and EIP, these scaled-down optimal activations can lie arbitrarily in their distributions.
 
 
@@ -448,13 +414,6 @@ We found that a sample of only 100 activations was sufficient to identify the ef
 %--you can model synergies as basis functions, but how does the CNS stay in the space
 %--in the future, 'synergists' should focus on exploitation of families of solutions
 %--synergies are exploiting these landscapes (see Racz & FVC)
-
-[[where to add this?:
-
-To overcome these difficulties, it is commonplace (e.g., \cite{Frontiers2012Modularity,Clewley2008Estimating}) to apply dimensionality reduction techniques to approximate the high-dimensional kinematic or muscle activation spaces \cite{scholz1999uncontrolled, krishnamoorthy2003muscle,santello1998postural} (Figure \ref{fig:overview}(g)).
-This dimensionality reduction approach is now being applied to ever higher-dimensional spaces of neural activity representing the dynamics of  populations of motor neurons (e.g., \cite{churchland2012neural,sadtler2014neural}) (Figure \ref{fig:overview}(a, b)). At heart, however, dimensionality reduction is a means to \emph{approximate} the latent structure of solution sets embedded in high-dimensional spaces \cite{valero-cuevas2015fundamentals}---with its inherent advantages and limitations \cite{Clewley2008Estimating}.
-
-]]
 
 The families of feasible solutions in Figures \ref{fig:parcoord_full} and \ref{fig:parcoords} are informative in other ways. As discussed  in  \cite{valero-cuevas2015fundamentals}, several authors have pointed out that  understanding neural control from the perspective of synergies requires that we  distinguish between synergies that are extracted descriptively from data vs. synergies that are implemented prescriptively by a controller or the nervous system \cite{alessandro2013musclesynergies,kutch2012challenges,tresch2009case,scholz1999uncontrolled}. As shown in our results, feasible activation sets have a well-defined, low-dimensional structure that is given by the biomechanics of the limb and the mechanical constraints defining the task. This explains why there have been repeated reports of experimental data exhibiting correlated activity and modularity that reflects a lower-dimensional structure embedded in the native higher-dimensional space of the measured variables \cite{Frontiers2012Modularity}. Therefore, the lines shown in the parallel coordinates plots describe in detail the obligatory correlations in muscle activations that are bound to be detected by dimensionality reduction algorithms because the feasible activation set is a lower-dimensional entity to begin with.
 
@@ -595,20 +554,8 @@ We do not have any competing interest to declare.
 \section*{Materials \& Correspondence}
 F.V.C. can be contacted via valero@usc.edu, and the original code used to produce all analyses is freely available at https://github.com/bcohn12/space .
 
-\nolinenumbers
+% \nolinenumbers
 
-% Either type in your references using
-% \begin{thebibliography}{}
-% \bibitem{}
-% Text
-% \end{thebibliography}
-%
-% or
-%
-% Compile your BiBTeX database using our plos2015.bst
-% style file and paste the contents of your .bbl file
-% here.
-% 
 
 \bibliography{plos_cohn_bibliography.bib}
 \bibliographystyle{plainf
