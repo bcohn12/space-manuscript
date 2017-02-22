@@ -1,10 +1,2 @@
 # TODO
-Warning--I didn't find a database entry for "valero-cuevas2007large"
-Warning--I didn't find a database entry for "burkholder2013practical"
-Warning--I didn't find a database entry for "moghadam2013well"
-Warning--I didn't find a database entry for "ting1999phase"
-Warning--I didn't find a database entry for "giszter2015motor"
-Warning--I didn't find a database entry for "lipson2000automatic"
-Warning--I didn't find a database entry for "theodorou2011ACC_finger_OC"
-Warning--I didn't find a database entry for "theodorou2010PiSquared"
-Warning--I didn't find a database entry for "kalakrishnan2011littleDog"
+fix citations
